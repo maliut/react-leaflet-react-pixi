@@ -3,6 +3,7 @@ import 'leaflet-pixi-overlay' // Must be called before the 'leaflet' import
 import L from 'leaflet'
 import * as PIXI from 'pixi.js'
 import {useEffect} from 'react'
+import {render, Text} from '@inlet/react-pixi'
 
 const position = [51.505, -0.09]
 
@@ -20,8 +21,6 @@ function App() {
 }
 
 const container = new PIXI.Container()
-const text = new PIXI.Text('我是 Pixi Text', { fill: 0xff1010 })
-container.addChild(text)
 
 const pixiOverlay = L.pixiOverlay((utils) => {
   const container = utils.getContainer()
@@ -30,11 +29,7 @@ const pixiOverlay = L.pixiOverlay((utils) => {
   const scale = utils.getScale()
 
   const coords = project([51.505, -0.08])
-  text.x = coords.x
-  text.y = coords.y
-  text.text = '我是 Pixi Text ' + Math.floor(Math.random() * 100)
-  text.scale.set(1 / scale)
-
+  render(<Text x={coords.x} y={coords.y} text='我是 Pixi Text' scale={1 / scale} />, container)
   renderer.render(container)
 }, container)
 

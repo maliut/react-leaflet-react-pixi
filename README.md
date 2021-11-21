@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# React Leaflet + React Pixi
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Write Leaflet and PixiJS applications using React declarative style.
 
-## Available Scripts
+Demo usage:
 
-In the project directory, you can run:
+```javascript
+function App() {
+  return (
+    <MapContainer center={[51.505, -0.09]} zoom={13} style={{width: '100vw', height: '100vh'}}>
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <PixiRoot>
+        <MyContent />
+      </PixiRoot>
+    </MapContainer>
+  )
+}
 
-### `npm start`
+function MyContent() {
+  const [containerX, containerY] = useProject([51.5, -0.09])
+  const [markerOffset, setMarkerOffset] = useState(0)
+  const [markerX, markerY] = useProject([51.5, -0.09 + markerOffset], [containerX, containerY])
+  const scale = useScale()
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  const [direction, setDirection] = useState(1)
+  useTick(delta => {
+    setMarkerOffset(val => val + delta * direction / 3000)
+    if (markerOffset > 0.05) {
+      setDirection(-1)
+    } else if (markerOffset < -0.05) {
+      setDirection(1)
+    }
+  })
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  return (
+    <Container x={containerX} y={containerY}>
+      <Sprite x={markerX} y={markerY} anchor={0.5} scale={1 / scale} image="https://s3-us-west-2.amazonaws.com/s.cdpn.io/693612/IaUrttj.png" />
+    </Container>
+  )
+}
+```
 
-### `npm test`
+![](./public/demo.gif)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+The work is based on [React Leaflet](https://react-leaflet.js.org/), [React Pixi](https://reactpixi.org/) and [Leaflet.PixiOverlay](https://github.com/manubb/Leaflet.PixiOverlay). This project is to combine them all together, provide a natural declarative code style, and fully encapsulate Leaflet.PixiOverlay inside.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The code is quite simple. You just need to copy `PixiRoot.js` and `hooks.js` in your project. Feel free to modify them as your need.

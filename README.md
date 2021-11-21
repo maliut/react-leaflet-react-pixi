@@ -43,10 +43,10 @@ function MyContent() {
 }
 ```
 
-![](./public/demo.gif)
+![Demo Gif](./public/demo.gif)
 
 ---
 
 The work is based on [React Leaflet](https://react-leaflet.js.org/), [React Pixi](https://reactpixi.org/) and [Leaflet.PixiOverlay](https://github.com/manubb/Leaflet.PixiOverlay). This project is to combine them all together, provide a natural declarative code style, and fully encapsulate Leaflet.PixiOverlay inside.
 
-The code is quite simple. You just need to copy `PixiRoot.js` and `hooks.js` in your project. Feel free to modify them as your need.
+The code is quite simple. You just need to copy `PixiRoot.js` and `hooks.js` in your project. Feel free to modify them as your need.(and don't forget to leave a ⭐star : )
